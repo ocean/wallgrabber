@@ -625,6 +625,7 @@
 				INFOPLIST_FILE = wallgrabber/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = net.flambeedyak.wallgrabber;
 				PRODUCT_NAME = wallgrabber;
 				PROVISIONING_PROFILE = "";
 			};
@@ -644,6 +645,7 @@
 				INFOPLIST_FILE = wallgrabber/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = net.flambeedyak.wallgrabber;
 				PRODUCT_NAME = wallgrabber;
 				PROVISIONING_PROFILE = "";
 			};
