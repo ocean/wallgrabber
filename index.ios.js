@@ -8,14 +8,18 @@ import React, {
   AppRegistry,
   ActivityIndicatorIOS,
   Component,
+  Dimensions,
   StyleSheet,
   Text,
   View
 } from 'react-native';
+import NetworkImage from 'react-native-image-progress';
+import Progress from 'react-native-progress';
 import Randomath from './randomath.js';
 import Swiper from 'react-native-swiper';
 
 const NUM_WALLPAPERS = 5;
+const {height, width} = Dimensions.get('window');
 
 class wallgrabber extends Component {
   constructor(props) {
@@ -67,18 +71,28 @@ class wallgrabber extends Component {
       return (
         // <View style={styles.dataContainer}>
         <Swiper
-
-        dot={<View style={{backgroundColor: 'rgba(25,25,25,0.4)', width: 10, height: 10, borderRadius: 10, marginLeft: 4, marginRight: 4, marginTop: 4, marginBottom: 4}} />}
-
-        activeDot={<View style={{backgroundColor: '#000', width: 10, height: 10, borderRadius: 10, marginLeft: 4, marginRight: 4}} />}
-
-        onMomentumScrollEnd={this.onMomentumScrollEnd}
+          dot={<View style={{backgroundColor: 'rgba(200,200,200,0.4)', width: 10, height: 10, borderRadius: 10, marginLeft: 4, marginRight: 4, marginTop: 4, marginBottom: 4}} />}
+          activeDot={<View style={{backgroundColor: '#fff', width: 10, height: 10, borderRadius: 10, marginLeft: 4, marginRight: 4}} />}
+          onMomentumScrollEnd={this.onMomentumScrollEnd}
         >
           {wallsJSON.map((wallpaper, index) => {
+            console.log(`https://unsplash.it/${wallpaper.width}/${wallpaper.height}?image=${wallpaper.id}`);
             return (
-              <Text style={styles.data} key={index}>
-                {wallpaper.id + '\n' + wallpaper.author}
-              </Text>
+              // <Text style={styles.data} key={index}>
+              //   {wallpaper.id + '\n' + wallpaper.author}
+              // </Text>
+              <View key={index}>
+                <NetworkImage
+                  source={{ uri: `https://unsplash.it/${wallpaper.width}/${wallpaper.height}?image=${wallpaper.id}` }}
+                  indicator={Progress.Circle}
+                  style={styles.wallpaperImage}
+                  indicatorProps={{
+                    color: 'rgba(255,255,255)',
+                    size: 60,
+                    thickness: 7
+                  }}>
+                </NetworkImage>
+              </View>
             );
           })}
         </Swiper>
@@ -121,16 +135,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#000',
   },
-  dataContainer: {
+  // dataContainer: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: '#fff',
+  // },
+  // data: {
+  //   fontSize: 16,
+  //   marginTop: 150,
+  //   textAlign: 'center',
+  // },
+  wallpaperImage: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  data: {
-    fontSize: 16,
-    marginTop: 150,
-    textAlign: 'center',
+    width: width,
+    height: height,
+    backgroundColor: '#000',
   },
   instructions: {
     textAlign: 'center',
