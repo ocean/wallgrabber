@@ -9,6 +9,7 @@ import React, {
   ActivityIndicatorIOS,
   Component,
   Dimensions,
+  PanResponder,
   StyleSheet,
   Text,
   View
@@ -29,6 +30,8 @@ class wallgrabber extends Component {
       wallsJSON: [],
       isLoading: true
     };
+
+    this.imagePanResponder = {};
   }
 
   fetchWallsJSON() {
@@ -49,6 +52,16 @@ class wallgrabber extends Component {
         });
       })
       .catch ( error => console.log('Fetch error: ' + error) );
+  }
+
+  handleStartShouldSetPanResponder(e, gestureState) {
+    return true;
+  }
+  handlePanResponderGrant(e, gestureState) {
+    console.log('Finger touched the image.');
+  }
+  handlePanResponderEnd(e, gestureState) {
+    console.log('Finger lifted off the image.');
   }
 
   renderLoadingMessage() {
@@ -73,6 +86,7 @@ class wallgrabber extends Component {
         <Swiper
           dot={<View style={{backgroundColor: 'rgba(200,200,200,0.4)', width: 10, height: 10, borderRadius: 10, marginLeft: 4, marginRight: 4, marginTop: 4, marginBottom: 4}} />}
           activeDot={<View style={{backgroundColor: '#fff', width: 10, height: 10, borderRadius: 10, marginLeft: 4, marginRight: 4}} />}
+          loop={false}
           onMomentumScrollEnd={this.onMomentumScrollEnd}
         >
           {wallsJSON.map((wallpaper, index) => {
@@ -90,7 +104,10 @@ class wallgrabber extends Component {
                     color: 'rgba(255,255,255)',
                     size: 60,
                     thickness: 7
-                  }}>
+                  }}
+                  {...this.imagePanResponder.panHandlers}>
+                  <Text style={styles.label}>Photo by</Text>
+                  <Text style={styles.label_author}>{wallpaper.author}</Text>
                 </NetworkImage>
               </View>
             );
@@ -98,6 +115,15 @@ class wallgrabber extends Component {
         </Swiper>
       );
     };
+  }
+
+  componentWillMount() {
+    this.imagePanResponder = PanResponder.create({
+      onStartShouldSetPanResponder: this.handleStartShouldSetPanResponder,
+      onPanResponderGrant: this.handlePanResponderGrant,
+      onPanResponderRelease: this.handlePanResponderEnd,
+      onPanResponderTerminate: this.handlePanResponderEnd
+    });
   }
 
   componentDidMount() {
@@ -152,9 +178,34 @@ const styles = StyleSheet.create({
     height: height,
     backgroundColor: '#000',
   },
+  label: {
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 12,
+    fontStyle: 'italic',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 2,
+    paddingLeft: 5,
+    top: 20,
+    left: 20,
+    width: width/2
+  },
+  label_author: {
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 14,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 2,
+    paddingLeft: 5,
+    top: 41,
+    left: 20,
+    width: width/2
+  },
   instructions: {
     textAlign: 'center',
-    color: '#333333',
+    color: '#333',
     marginBottom: 5,
   },
 });
